@@ -31,3 +31,14 @@ A comprehensive Gym management application built for the Flutter Developer assig
 1. Clone the repo: `git clone <repo-url>`
 2. Install dependencies: `flutter pub get`
 3. Run the app: `flutter run` (For web: `flutter run -d chrome`)
+
+## How to build the app
+
+To build the final release app follow the following task:
+
+- ### for android (type the command below in terminal):
+- `flutter build apk --release`
+- ### for ios (type the command below in terminal):
+- `flutter build ios --release`
+- ### for web (type the command below in terminal):
+- `flutter build web`
