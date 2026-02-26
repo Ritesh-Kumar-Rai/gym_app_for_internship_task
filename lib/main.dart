@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart'; // Font library
-import './widgets/splash_screen.dart'; // Jo main aapko abhi dunga
+import 'package:google_fonts/google_fonts.dart';
+import './widgets/splash_screen.dart';
 
 void main() {
   runApp(const GymApp());
@@ -15,12 +15,13 @@ class GymApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Gym Pro',
       theme: ThemeData(
-        brightness: Brightness.dark, // Gym app dark theme mein sexy lagti hai
+        brightness: Brightness.dark, // for dark theme
         primaryColor: const Color(0xFFCCFF00), // Neon Green color
         scaffoldBackgroundColor: Colors.black, // Background pure black
         textTheme: GoogleFonts.latoTextTheme(Theme.of(context).textTheme),
       ),
-      home: const SplashScreen(), // Sabse pehle ye screen khulegi
+      home:
+          const SplashScreen(), // At first this screen appeared then after some delay it will redirect to home/summary page
     );
   }
 }
