@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../services/storage_service.dart';
+import "../../controllers/profile_controller.dart";
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -9,14 +9,14 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final StorageService _storageService = StorageService();
+  // final StorageService _storageService = StorageService();
 
-  // Controllers for input fields [cite: 61, 62, 63, 64]
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _ageController = TextEditingController();
-  final TextEditingController _weightController = TextEditingController();
-  final TextEditingController _goalController = TextEditingController();
-
+  // // Controllers for input fields [cite: 61, 62, 63, 64]
+  // final TextEditingController _nameController = TextEditingController();
+  // final TextEditingController _ageController = TextEditingController();
+  // final TextEditingController _weightController = TextEditingController();
+  // final TextEditingController _goalController = TextEditingController();
+  /*
   @override
   void initState() {
     super.initState();
@@ -48,6 +48,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
         backgroundColor: Color(0xFFCCFF00),
       ),
     );
+  }*/
+
+  // new one after refactoring the code to MVC controller
+  final ProfileController _controller = new ProfileController();
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.loadProfileData();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _handleSave() async {
+    await _controller.saveData();
+
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Profile Updated Locally!"),
+        backgroundColor: Color(0xFFCCFF00),
+      ),
+    );
   }
 
   @override
@@ -71,10 +98,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Icon(Icons.person, size: 50, color: Color(0xFFCCFF00)),
             ),
             const SizedBox(height: 30),
-            _buildTextField("Name", _nameController),
-            _buildTextField("Age", _ageController, isNumber: true),
-            _buildTextField("Weight (kg)", _weightController, isNumber: true),
-            _buildTextField("Fitness Goal", _goalController),
+            _buildTextField("Name", _controller.nameController),
+            _buildTextField("Age", _controller.ageController, isNumber: true),
+            _buildTextField(
+              "Weight (kg)",
+              _controller.weightController,
+              isNumber: true,
+            ),
+            _buildTextField("Fitness Goal", _controller.goalController),
             const SizedBox(height: 30),
 
             // Save Button
@@ -88,7 +119,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     borderRadius: BorderRadius.circular(15),
                   ),
                 ),
-                onPressed: _saveData,
+                // onPressed: _saveData,
+                onPressed: _handleSave,
                 child: const Text(
                   "UPDATE PROFILE",
                   style: TextStyle(

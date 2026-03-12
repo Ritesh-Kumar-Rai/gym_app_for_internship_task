@@ -35,7 +35,7 @@ class HomeScreen extends StatelessWidget {
 
               // 3. TODAY'S WORKOUT SUMMARY [cite: 32]
               const Text(
-                "Today's Summary",
+                "Today's Workout Summary",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,
@@ -112,6 +112,50 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ],
               ),
+              const SizedBox(height: 25),
+              const Text(
+                "Recent Activity",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 18,
+                ),
+              ),
+              const SizedBox(height: 15),
+              SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+
+                child: Column(
+                  children: [
+                    Card(
+                      child: ListTile(
+                        title: Text(
+                          "Walk 10 minutes",
+                          style: TextStyle(fontWeight: FontWeight.w700),
+                        ),
+                        subtitle: Text(
+                          "30Kcal",
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                        leading: Icon(Icons.directions_walk),
+                      ),
+                    ),
+                    Card(
+                      child: ListTile(
+                        title: Text(
+                          "Walk 10 minutes",
+                          style: TextStyle(fontWeight: FontWeight.w700),
+                        ),
+                        subtitle: Text(
+                          "30Kcal",
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                        leading: Icon(Icons.directions_walk),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -120,6 +164,47 @@ class HomeScreen extends StatelessWidget {
   }
 
   // --- UI HELPER WIDGETS ---
+
+  // Widget _buildProgressCard() {
+  //   return Container(
+  //     width: double.infinity,
+  //     padding: const EdgeInsets.all(20),
+  //     decoration: BoxDecoration(
+  //       gradient: const LinearGradient(
+  //         colors: [Color(0xFFCCFF00), Color(0xFF99CC00)],
+  //       ),
+  //       borderRadius: BorderRadius.circular(20),
+  //     ),
+  //     child: const Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: [
+  //         Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             Text(
+  //               "Weekly Goal",
+  //               style: TextStyle(
+  //                 color: Colors.black,
+  //                 fontWeight: FontWeight.bold,
+  //               ),
+  //             ),
+  //             SizedBox(height: 5),
+  //             Text(
+  //               "75% Completed",
+  //               style: TextStyle(
+  //                 color: Colors.black,
+  //                 fontSize: 20,
+  //                 fontWeight: FontWeight.bold,
+  //               ),
+  //             ),
+  //             LinearProgressIndicator(value: 0.6), // value is null by default
+  //           ],
+  //         ),
+  //         Icon(Icons.insights, size: 40, color: Colors.black),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _buildProgressCard() {
     return Container(
@@ -131,31 +216,47 @@ class HomeScreen extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(20),
       ),
-      child: const Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Weekly Goal",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
+          /// FIX: Expanded added
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text(
+                  "Weekly Goal",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              SizedBox(height: 5),
-              Text(
-                "75% Completed",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+
+                SizedBox(height: 5),
+
+                Text(
+                  "75% Completed",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-            ],
+
+                SizedBox(height: 10),
+
+                LinearProgressIndicator(
+                  value: 0.75,
+                  backgroundColor: Colors.white54,
+                  valueColor: AlwaysStoppedAnimation(Colors.black),
+                ),
+              ],
+            ),
           ),
-          Icon(Icons.insights, size: 40, color: Colors.black),
+
+          const SizedBox(width: 20),
+
+          const Icon(Icons.insights, size: 40, color: Colors.black),
         ],
       ),
     );

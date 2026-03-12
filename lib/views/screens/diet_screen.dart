@@ -1,6 +1,7 @@
+import 'package:bilixis_gym_app/controllers/diet_controller.dart';
+import 'package:bilixis_gym_app/models/meal_model.dart';
+// import 'package:bilixis_gym_app/services/api_service.dart';
 import 'package:flutter/material.dart';
-import '../services/api_service.dart';
-import '../models/meal_model.dart';
 
 class DietScreen extends StatefulWidget {
   const DietScreen({super.key});
@@ -10,13 +11,28 @@ class DietScreen extends StatefulWidget {
 }
 
 class _DietScreenState extends State<DietScreen> {
-  final ApiService _apiService = ApiService();
+  /*final ApiService _apiService = ApiService();
   late Future<List<Meal>> _mealsFuture;
 
   @override
   void initState() {
     super.initState();
     _mealsFuture = _apiService.fetchMeals(); // API call on start [cite: 54]
+  }
+  */
+
+  final DietController _controller = new DietController();
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.loadMeals();
+  }
+
+  void _retry() {
+    setState(() {
+      _controller.retry();
+    });
   }
 
   @override
@@ -31,7 +47,8 @@ class _DietScreenState extends State<DietScreen> {
         ),
       ),
       body: FutureBuilder<List<Meal>>(
-        future: _mealsFuture,
+        // future: _mealsFuture,
+        future: _controller.mealsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -58,9 +75,10 @@ class _DietScreenState extends State<DietScreen> {
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
-                      onPressed: () => setState(() {
-                        _mealsFuture = _apiService.fetchMeals(); // Retry logic
-                      }),
+                      // onPressed: () => setState(() {
+                      //   _mealsFuture = _apiService.fetchMeals(); // Retry logic
+                      // }),
+                      onPressed: _retry,
                       child: const Text("Retry"),
                     ),
                   ],
@@ -118,3 +136,20 @@ class _DietScreenState extends State<DietScreen> {
     );
   }
 }
+
+
+
+// Vegan and Vegetarian options
+// buttons with more options/categories like veg, non-veg, types etc.
+// SearchBar  
+// Details Page for food recipe  
+// add to favourites option in foods and workouts
+// user preferred options where user can select the types of workout he likes to do
+
+// In profile screen: 
+// My Journey card where user can see it's whole joruney of no. of activity he done
+
+
+// Questionnaires when the app started for first time [and later] 
+// like: weight, plan, goal, timing etc.
+
