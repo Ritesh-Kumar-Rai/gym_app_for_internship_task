@@ -5,8 +5,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 class NotificationService {
   final FlutterLocalNotificationsPlugin notificationsPlugin =
       FlutterLocalNotificationsPlugin();
-
-  Future<void> initNotification() async {
+  /*Future<void> initNotification() async {
     // Android-specific settings
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -35,6 +34,22 @@ class NotificationService {
     FlutterLocalNotificationsPlugin().initialize(
       settings: initializationSettings,
     );
+  }*/
+
+  Future<void> initNotification() async {
+    const AndroidInitializationSettings androidSettings =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    const InitializationSettings initializationSettings =
+        InitializationSettings(android: androidSettings);
+
+    await notificationsPlugin.initialize(settings: initializationSettings);
+
+    await notificationsPlugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >()
+        ?.requestNotificationsPermission();
   }
 
   Future<void> showNotification({
@@ -42,19 +57,21 @@ class NotificationService {
     String? title,
     String? body,
   }) async {
-    return notificationsPlugin.show(
+    const NotificationDetails notificationDetails = NotificationDetails(
+      android: AndroidNotificationDetails(
+        'channel_id',
+        'channel_name',
+        importance: Importance.max,
+        priority: Priority.high,
+      ),
+      iOS: DarwinNotificationDetails(),
+    );
+
+    await notificationsPlugin.show(
       id: id,
       title: title,
       body: body,
-      notificationDetails: const NotificationDetails(
-        android: AndroidNotificationDetails(
-          'channel_id',
-          'channel_name',
-          importance: Importance.max,
-          priority: Priority.high,
-        ),
-        iOS: DarwinNotificationDetails(),
-      ),
+      notificationDetails: notificationDetails,
     );
   }
 }
@@ -67,19 +84,28 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
+  final NotificationService notificationService = NotificationService();
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialize notifications when screen starts
+    notificationService.initNotification();
+  }
+
   @override
   Widget build(BuildContext context) {
-    NotificationService n = NotificationService();
-
     return Scaffold(
       appBar: AppBar(title: Text("Notification Screen")),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          n.showNotification(
+          notificationService.showNotification(
+            id: 90,
             title: "Fitness Gym Tracker",
             body: "You have an notification 😉",
-            id: 90,
           );
+          print("Notification button is presssed!!!");
         },
         child: Icon(Icons.add),
       ),
