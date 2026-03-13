@@ -1,7 +1,7 @@
 import 'package:bilixis_gym_app/fitness_app_version2/screens/diet_screen.dart';
 import 'package:bilixis_gym_app/fitness_app_version2/screens/home_screen2.dart';
 import 'package:flutter/material.dart';
-// import 'package:learning_flutter/fitness/screens/notification_screen.dart';
+import "package:bilixis_gym_app/fitness_app_version2/screens/notification_screen.dart";
 // import 'home_screen.dart';
 import 'history_screen.dart';
 
@@ -17,7 +17,7 @@ class _FitnessAppState extends State<FitnessApp> {
     // HomeScreen(),
     FitnessHomePage(),
     FoodHomePage(),
-    // NotificationScreen(),
+    NotificationScreen(),
     HistoryScreen(),
   ];
 
@@ -38,10 +38,10 @@ class _FitnessAppState extends State<FitnessApp> {
               icon: Icon(Icons.food_bank_outlined),
               label: "Diet",
             ),
-            // BottomNavigationBarItem(
-            //   icon: Icon(Icons.notification_add),
-            //   label: "Notifications",
-            // ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.notification_add),
+              label: "Notifications",
+            ),
             BottomNavigationBarItem(
               icon: Icon(Icons.history),
               label: "History",

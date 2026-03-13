@@ -1,5 +1,6 @@
-// import "package:flutter/material.dart";
-/*import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import "package:flutter/material.dart";
+
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationService {
   final FlutterLocalNotificationsPlugin notificationsPlugin =
@@ -11,20 +12,29 @@ class NotificationService {
         AndroidInitializationSettings('@mipmap/ic_launcher');
 
     // iOS-specific settings
-    const DarwinInitializationSettings initializationSettingsIOS =
-        DarwinInitializationSettings(
-          requestAlertPermission: true,
-          requestBadgePermission: true,
-          requestSoundPermission: true,
-        );
+    // const DarwinInitializationSettings initializationSettingsIOS =
+    //     DarwinInitializationSettings(
+    //       requestAlertPermission: true,
+    //       requestBadgePermission: true,
+    //       requestSoundPermission: true,
+    //     );
+
+    // const InitializationSettings initializationSettings =
+    //     InitializationSettings(
+    //       android: initializationSettingsAndroid,
+    //       // iOS: initializationSettingsIOS,
+    //     );
 
     const InitializationSettings initializationSettings =
-        InitializationSettings(
-          android: initializationSettingsAndroid,
-          iOS: initializationSettingsIOS,
-        );
+        InitializationSettings(android: initializationSettingsAndroid);
 
-    await notificationsPlugin.initialize(settings: initializationSettings);
+    // await flutterLocalNotificationsPlugin.initialize(
+    //   settings: initializationSettings,
+    // );
+
+    FlutterLocalNotificationsPlugin().initialize(
+      settings: initializationSettings,
+    );
   }
 
   Future<void> showNotification({
@@ -60,6 +70,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     NotificationService n = NotificationService();
+
     return Scaffold(
       appBar: AppBar(title: Text("Notification Screen")),
       floatingActionButton: FloatingActionButton(
@@ -75,4 +86,3 @@ class _NotificationScreenState extends State<NotificationScreen> {
     );
   }
 }
-*/
