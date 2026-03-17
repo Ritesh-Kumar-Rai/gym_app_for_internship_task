@@ -184,15 +184,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final minutes = await askNotificationMinutes(context);
-          if (minutes != null) {
-            await notificationService.scheduleNotification(
-              context,
-              passedMinute: minutes,
-            );
-          } else {
-            await notificationService.scheduleNotification(context);
-          }
+          await askNotificationMinutes(context, notificationService);
         },
         child: Icon(Icons.add),
       ),
@@ -201,12 +193,15 @@ class _NotificationScreenState extends State<NotificationScreen> {
 }
 
 // modal for notification scheduling
-Future<int?> askNotificationMinutes(BuildContext context) async {
+Future<int?> askNotificationMinutes(
+  BuildContext parentContext,
+  NotificationService instance,
+) async {
   final controller = TextEditingController();
 
   return await showDialog<int>(
-    context: context,
-    builder: (context) {
+    context: parentContext,
+    builder: (dialogContext) {
       return AlertDialog(
         title: const Text("Reminder ⏰"),
         content: TextField(
@@ -219,13 +214,23 @@ Future<int?> askNotificationMinutes(BuildContext context) async {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext),
             child: const Text("Cancel"),
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               final minutes = int.tryParse(controller.text);
-              Navigator.pop(context, minutes);
+              Navigator.pop(dialogContext);
+              if (minutes != null) {
+                (minutes > 0)
+                    ? await instance.scheduleNotification(
+                        parentContext,
+                        passedMinute: minutes,
+                      )
+                    : await instance.scheduleNotification(parentContext);
+              } else {
+                await instance.scheduleNotification(parentContext);
+              }
             },
             child: const Text("Set"),
           ),
