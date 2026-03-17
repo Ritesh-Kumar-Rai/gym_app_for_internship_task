@@ -1,7 +1,6 @@
 import 'dart:async';
+import 'package:bilixis_gym_app/screens/fitness_main_screen.dart';
 import 'package:flutter/material.dart';
-import '../screens/main_wrapper.dart';
-import "../../fitness_app_version2/screens/fitness_main_screen.dart";
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

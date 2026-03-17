@@ -1,7 +1,7 @@
-import 'package:bilixis_gym_app/fitness_app_version2/screens/diet_screen.dart';
-import 'package:bilixis_gym_app/fitness_app_version2/screens/home_screen2.dart';
+import 'package:bilixis_gym_app/screens/diet_screen.dart';
+import 'package:bilixis_gym_app/screens/home_screen2.dart';
+import 'package:bilixis_gym_app/screens/notification_screen.dart';
 import 'package:flutter/material.dart';
-import "package:bilixis_gym_app/fitness_app_version2/screens/notification_screen.dart";
 // import 'home_screen.dart';
 import 'history_screen.dart';
 
@@ -27,7 +27,6 @@ class _FitnessAppState extends State<FitnessApp> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: screens[currentIndex],
-
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: currentIndex,
           type: BottomNavigationBarType.fixed,

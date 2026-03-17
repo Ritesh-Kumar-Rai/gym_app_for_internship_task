@@ -1,6 +1,196 @@
-import 'package:bilixis_gym_app/fitness_app_version2/database/database_helper.dart';
+import 'dart:math';
+
+import 'package:bilixis_gym_app/database/database_helper.dart';
+import 'package:bilixis_gym_app/widgets/premium_hydration_card.dart';
 import 'package:flutter/material.dart';
 
+class WaterDropClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+
+    path.moveTo(size.width / 2, 0);
+
+    path.quadraticBezierTo(
+      0,
+      size.height * 0.35,
+      size.width * 0.2,
+      size.height,
+    );
+
+    path.lineTo(size.width * 0.8, size.height);
+
+    path.quadraticBezierTo(size.width, size.height * 0.35, size.width / 2, 0);
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}
+
+class WavePainter extends CustomPainter {
+  final double animation;
+  final double level;
+
+  WavePainter(this.animation, this.level);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint backWave = Paint()..color = Colors.blue.withOpacity(0.35);
+    Paint frontWave = Paint()..color = Colors.blue;
+
+    double baseHeight = size.height * level;
+
+    Path path1 = Path();
+    Path path2 = Path();
+
+    path1.moveTo(0, baseHeight);
+    path2.moveTo(0, baseHeight);
+
+    for (double i = 0; i <= size.width; i++) {
+      path1.lineTo(
+        i,
+        baseHeight + 10 * sin((i / size.width * 2 * pi) + animation * 2 * pi),
+      );
+
+      path2.lineTo(
+        i,
+        baseHeight +
+            15 * sin((i / size.width * 2 * pi) + animation * 2 * pi + pi / 2),
+      );
+    }
+
+    path1.lineTo(size.width, size.height);
+    path1.lineTo(0, size.height);
+
+    path2.lineTo(size.width, size.height);
+    path2.lineTo(0, size.height);
+
+    canvas.drawPath(path1, backWave);
+    canvas.drawPath(path2, frontWave);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => true;
+}
+
+// custom widget for water level animation
+class WaterDropWidget extends StatefulWidget {
+  final double waterLevel;
+
+  const WaterDropWidget({required this.waterLevel});
+
+  @override
+  _WaterDropWidgetState createState() => _WaterDropWidgetState();
+}
+
+class _WaterDropWidgetState extends State<WaterDropWidget>
+    with SingleTickerProviderStateMixin {
+  late AnimationController controller;
+
+  @override
+  void initState() {
+    super.initState();
+
+    controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 2),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 200,
+      height: 250,
+      child: ClipPath(
+        clipper: WaterDropClipper(),
+        child: AnimatedBuilder(
+          animation: controller,
+          builder: (_, __) {
+            return CustomPaint(
+              painter: WavePainter(controller.value, widget.waterLevel),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+// 2nd
+
+class WaterBowl extends StatefulWidget {
+  final double waterLevel;
+
+  const WaterBowl({super.key, required this.waterLevel});
+
+  @override
+  State<WaterBowl> createState() => _WaterBowlState();
+}
+
+class _WaterBowlState extends State<WaterBowl>
+    with SingleTickerProviderStateMixin {
+  late AnimationController controller;
+
+  double animatedLevel = 0.6;
+
+  @override
+  void initState() {
+    super.initState();
+
+    animatedLevel = widget.waterLevel;
+
+    controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    )..repeat();
+  }
+
+  @override
+  void didUpdateWidget(covariant WaterBowl oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // smooth water level animation
+    setState(() {
+      animatedLevel = widget.waterLevel;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder(
+      tween: Tween(begin: animatedLevel, end: widget.waterLevel),
+      duration: const Duration(milliseconds: 800),
+      builder: (context, level, child) {
+        return SizedBox(
+          width: 260,
+          height: 160,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(130),
+            child: AnimatedBuilder(
+              animation: controller,
+              builder: (_, __) {
+                return CustomPaint(
+                  painter: WavePainter(controller.value, level),
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+// ------------------------------------------------
 class FitnessHomePage extends StatefulWidget {
   @override
   State<FitnessHomePage> createState() => _FitnessHomePageState();
@@ -28,6 +218,23 @@ class _FitnessHomePageState extends State<FitnessHomePage> {
   final carbs = TextEditingController();
   final fat = TextEditingController();
 
+  // water level states
+  double waterLevel = 0.7;
+
+  void addWater() {
+    setState(() {
+      waterLevel -= 0.05; // water rises
+      if (waterLevel < 0.1) waterLevel = 0.1;
+    });
+  }
+
+  void removeWater() {
+    setState(() {
+      waterLevel += 0.08;
+      if (waterLevel > 0.9) waterLevel = 0.9;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +255,7 @@ class _FitnessHomePageState extends State<FitnessHomePage> {
                       const CircleAvatar(
                         radius: 25,
                         backgroundImage: NetworkImage(
-                          'https://i.pravatar.cc/150?u=anna',
+                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFqxrMeDw9jIUKRVipzMxGy8nHpRhpancrmQ&s',
                         ),
                       ),
                       const SizedBox(width: 12),
@@ -179,6 +386,58 @@ class _FitnessHomePageState extends State<FitnessHomePage> {
                 ),
               ),
 
+              const SizedBox(height: 30),
+
+              // Quick Logging
+              const SectionHeader(title: "Quick Log"),
+              const SizedBox(height: 16),
+
+              // Container(
+              //   height: 400,
+              //   width: double.infinity,
+              //   padding: EdgeInsets.all(20),
+              //   decoration: BoxDecoration(
+              //     color: const Color(0xFFE0F2F1),
+              //     borderRadius: BorderRadius.circular(28),
+              //   ),
+              //   child: Column(
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //       Text(
+              //         "Today's Water Consumed 💧",
+              //         style: TextStyle(
+              //           fontWeight: FontWeight.bold,
+              //           fontSize: 18,
+              //         ),
+              //       ),
+              //       Row(
+              //         children: [
+              //           Column(
+              //             mainAxisAlignment: MainAxisAlignment.center,
+              //             children: [
+              //               Center(
+              //                 // child: WaterDropWidget(waterLevel: waterLevel),
+              //                 // child: WaterBowl(waterLevel: waterLevel),
+              //                 child: HydrationCard(),
+              //               ),
+              //               // SizedBox(height: 30),
+
+              //               // ElevatedButton(
+              //               //   onPressed: addWater,
+              //               //   child: Icon(Icons.add),
+              //               // ),
+              //               // ElevatedButton(
+              //               //   onPressed: removeWater,
+              //               //   child: Icon(Icons.exposure_minus_1),
+              //               // ),
+              //             ],
+              //           ),
+              //         ],
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              Center(child: HydrationCardPremium()),
               const SizedBox(height: 30),
 
               // --- Popular Exercise Section ---

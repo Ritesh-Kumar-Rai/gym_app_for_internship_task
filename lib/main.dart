@@ -1,6 +1,6 @@
+import 'package:bilixis_gym_app/widgets/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'views/widgets/splash_screen.dart';
 
 void main() {
   runApp(const GymApp());

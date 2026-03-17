@@ -16,7 +16,11 @@ class FoodHomePage extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Color(0xFF00C7C7), Color(0xFF00BFA5)],
+                colors: [
+                  Color(0xFFE5D9FF),
+                  Color(0xFF00BFA5),
+                  Color(0xFFE5D9FF),
+                ],
               ),
             ),
           ),
@@ -158,16 +162,13 @@ class SectionHeader extends StatelessWidget {
           title,
           style: const TextStyle(
             color: Color(0xFF1A1D26),
-            fontSize: 18,
+            fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
         TextButton(
           onPressed: () {},
-          child: const Text(
-            "See All",
-            style: TextStyle(color: Color(0xFF00C7C7), fontSize: 13),
-          ),
+          child: const Text("See All", style: TextStyle(color: Colors.grey)),
         ),
       ],
     );
@@ -303,7 +304,7 @@ class RecommendedFoodScroll extends StatelessWidget {
                         Text(
                           item['price'],
                           style: const TextStyle(
-                            color: Color(0xFF00C7C7),
+                            color: Colors.black54,
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),

@@ -1,3 +1,4 @@
+import 'package:bilixis_gym_app/models/recipe_ds.dart';
 import 'package:flutter/material.dart';
 
 class FoodDetailPage extends StatefulWidget {
@@ -74,24 +75,6 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                       ),
                       const SizedBox(height: 20),
 
-                      // --- Icons Row ---
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     const InfoIcon(
-                      //       icon: Icons.location_on,
-                      //       label: "2.3 Km",
-                      //     ),
-                      //     InfoIcon(
-                      //       icon: Icons.star,
-                      //       label: "${widget.foodItem['rating']} Ratings",
-                      //     ), // Use passed rating
-                      //     const InfoIcon(
-                      //       icon: Icons.access_time_filled,
-                      //       label: "20-24 Min",
-                      //     ),
-                      //   ],
-                      // ),
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
@@ -142,7 +125,7 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                             TextSpan(
                               text: " Read More...",
                               style: TextStyle(
-                                color: Color(0xFF00C7C7),
+                                color: Colors.black54,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -155,23 +138,60 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                       const Text(
                         "Recipe",
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 12),
-                      Container(
-                        height: 750,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[100],
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc,",
+                      // Container(
+                      //   height: 750,
+                      //   decoration: BoxDecoration(
+                      //     color: Colors.white24,
+                      //     borderRadius: BorderRadius.circular(20),
+                      //   ),
+                      //   child: ListView.builder(
+                      //     scrollDirection: Axis.vertical,
+                      //     itemCount: pizzaNapoletanaSteps.length,
+                      //     itemBuilder: (context, index) {
+                      //       final step = pizzaNapoletanaSteps[index];
+
+                      //       return ListTile(
+                      //         leading: CircleAvatar(
+                      //           child: Text(step.stepNumber.toString()),
+                      //         ),
+                      //         title: Text(
+                      //           step.title,
+                      //           style: TextStyle(fontWeight: FontWeight.bold),
+                      //         ),
+                      //         subtitle: Text(
+                      //           step.description,
+                      //           style: TextStyle(
+                      //             color: Colors.black54,
+                      //             fontSize: 13,
+                      //           ),
+                      //         ),
+                      //       );
+                      //     },
+                      //   ),
+                      // ),
+                      ...pizzaNapoletanaSteps.map((step) {
+                        return ListTile(
+                          leading: CircleAvatar(
+                            child: Text(step.stepNumber.toString()),
                           ),
-                        ),
-                      ),
+                          title: Text(
+                            step.title,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                            step.description,
+                            style: const TextStyle(
+                              color: Colors.black54,
+                              fontSize: 13,
+                            ),
+                          ),
+                        );
+                      }),
 
                       // Space for the floating bottom navigation bar
                       const SizedBox(height: 100),
@@ -249,7 +269,7 @@ class CircleButton extends StatelessWidget {
     required this.icon,
     this.onPressed,
     this.badgeCount = 0,
-    this.colors = Colors.grey,
+    this.colors = Colors.black,
   });
 
   @override
